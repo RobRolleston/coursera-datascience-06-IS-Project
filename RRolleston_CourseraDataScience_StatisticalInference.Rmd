@@ -12,31 +12,63 @@ This is the project for the statistical inference class. In it, I will use simul
 2. Basic inferential data analysis.
 
 ## Simulation Excercise
-
 tbd
 
+### Simulations
+```{r}
+nosim <- 1000
+n <- 40
+lambda <- 0.2
+populationMean <- 1./lambda
+populationSD <- 1./lambda
+sampleData <- matrix(rexp(nosim * n, rate=lambda), nosim)
+```
+
+### Sample Mean versus Theoretical Mean
+```{r}
+sampleMeans <- apply(sampleData, 1, mean)
+sampleMean <- mean(sampleMeans)
+sampleSD <- sd(sampleMeans)
+
+inferredSD <- populationSD/sqrt(n)
+```
+```{r, echo=FALSE}
+hist(sampleMeans)
+```
+
+### Sample Variance versus Theoretical Variance
+tbd
+
+### Distribution
+tbd
+```{r}
+x <- seq(0,50, length=100)
+hx <- dexp(x, rate=lambda)
+```
+```{r, echo=FALSE}
+plot(x, hx, type="l")
+```
+
+***
+
 ##  Basic Inferential Data Analysis
-Load the required data
+tbd
+
+### Load and explore data
+tbd
 ```{r}
 library(datasets)
 toothGrowth <- ToothGrowth
 ```
 
-***
+### Data Summary
+tbd
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+### Compare tooth growth by supp and dose
+tbd
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+### Conclusions
+tbd
 
-```{r}
-summary(cars)
-library(datasets)
-```
 
-You can also embed plots, for example:
 
-```{r, echo=FALSE}
-plot(cars)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
