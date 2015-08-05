@@ -1,0 +1,42 @@
+---
+title: 'Coursera Data Science Project: Statistical Inference'
+author: "Rob Rolleston"
+date: "August 23, 2015"
+output: pdf_document
+---
+
+###  Introduction
+This is the project for the statistical inference class. In it, I will use simulation to explore inference and do some simple inferential data analysis. The project consists of two parts:
+
+1. A simulation exercise.
+2. Basic inferential data analysis.
+
+## Simulation Excercise
+
+tbd
+
+##  Basic Inferential Data Analysis
+Load the required data
+```{r}
+library(datasets)
+toothGrowth <- ToothGrowth
+```
+
+***
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+summary(cars)
+library(datasets)
+```
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
