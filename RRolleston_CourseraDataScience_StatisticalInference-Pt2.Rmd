@@ -1,0 +1,43 @@
+---
+title: 'Coursera Data Science Project: Statistical Inference (Part 2)'
+author: "Rob Rolleston"
+date: "August 23, 2015"
+output: pdf_document
+---
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=6, fig.height=3, fig.path='figure/',
+                      echo=TRUE, warning=FALSE, message=FALSE)
+```
+```{r echo=FALSE}
+library(ggplot2, quietly = TRUE, verbose=FALSE, warn.conflicts = FALSE)
+library(dplyr, quietly = TRUE, verbose=FALSE, warn.conflicts = FALSE)
+library(tidyr, quietly = TRUE, verbose=FALSE, warn.conflicts = FALSE)
+```
+###  Introduction
+This is the project for the statistical inference class. In it, I will use simulation to explore inference and do some simple inferential data analysis. The project consists of two parts:
+
+1. A simulation exercise.
+2. Basic inferential data analysis (this report)
+
+
+##  Basic Inferential Data Analysis
+tbd
+
+### Load and explore data
+tbd
+```{r}
+library(datasets)
+data("ToothGrowth")
+```
+
+### Data Summary
+tbd
+
+### Compare tooth growth by supp and dose
+tbd
+
+### Conclusions
+tbd
+
+
+

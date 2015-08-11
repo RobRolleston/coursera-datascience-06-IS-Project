@@ -1,0 +1,96 @@
+---
+title: 'Coursera Data Science Project: Statistical Inference (Part 1)'
+author: "Rob Rolleston"
+date: "August 23, 2015"
+output: pdf_document
+---
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=6, fig.height=3, fig.path='figure/',
+                      echo=TRUE, warning=FALSE, message=FALSE)
+```
+```{r echo=FALSE}
+library(ggplot2, quietly = TRUE,verbose=FALSE, warn.conflicts = FALSE)
+library(dplyr, quietly = TRUE, verbose=FALSE, warn.conflicts = FALSE)
+library(tidyr, quietly = TRUE, verbose=FALSE, warn.conflicts = FALSE)
+```
+###  Introduction
+This is the project for the statistical inference class. In it, I will use simulation to explore inference and do some simple inferential data analysis. The project consists of two parts:
+
+1. A simulation exercise. (this report)
+2. Basic inferential data analysis.
+
+## Simulation Excercise
+tbd
+
+### Simulations
+```{r}
+nosim <- 1000
+n <- 40
+lambda <- 0.2
+populationMean <- 1./lambda
+populationSD <- 1./lambda
+sampleData <- matrix(rexp(nosim * n, rate=lambda), nosim)
+hist(sampleData)
+
+sampleData_tbl <- gather(tbl_df(data.frame(sampleData)))
+#ggplot(sampleData_tbl, aes(x=value)) + geom_histogram()
+#ggplot(sampleData_tbl, aes(x=value)) + geom_density()
+```
+
+### Sample Mean versus Theoretical Mean
+```{r}
+sampleMeans <- apply(sampleData, 1, mean)
+sampleMean <- mean(sampleMeans)
+sampleSD <- sd(sampleMeans)
+
+inferredSD <- populationSD/sqrt(n)
+```
+```{r, echo=FALSE}
+#hist(sampleMeans)
+sampleMeans_tbl <- tbl_df(data.frame(sampleMeans))
+ggplot(sampleMeans_tbl, aes(x=sampleMeans)) +
+  geom_histogram(color="black", fill="white") +
+  geom_vline(aes(xintercept=sampleMean), color="black", size=2) + 
+  geom_vline(aes(xintercept=populationMean), color="red", linetype="dashed", size=1)
+```
+
+### Sample Variance versus Theoretical Variance
+Compare the inferred variation of the means (inferredSD, via s/sqrt(n)) with the actual value
+```{r, echo=FALSE}
+#hist(sampleMeans)
+ggplot(sampleMeans_tbl, aes(x=sampleMeans)) +
+  geom_histogram(color="black", fill="white") +
+  geom_vline(aes(xintercept=sampleMean), color="black", size=1, alpha=.2) + 
+  geom_vline(aes(xintercept=populationMean), color="red", linetype="dashed", size=.5, alpha=.2) +
+  geom_segment(aes(x=sampleMean-sampleSD, y=50, 
+                   xend=sampleMean+sampleSD, yend=50), color="black", size=2) + 
+  geom_segment(aes(x=populationMean-inferredSD, y=50, 
+                   xend=populationMean+inferredSD, yend=50), color="red", linetype="dashed", size=1) +
+  geom_segment(aes(x=sampleMean-2*sampleSD, y=25, 
+                   xend=sampleMean+2*sampleSD, yend=25), color="black", size=2) + 
+  geom_segment(aes(x=populationMean-2*inferredSD, y=25, 
+                   xend=populationMean+2*inferredSD, yend=25), color="red", linetype="dashed", size=1)
+
+```
+
+### Distribution
+tbd
+```{r}
+#x <- seq(0,50, length=100)
+#hx <- dexp(x, rate=lambda)
+```
+```{r, echo=FALSE}
+#plot(x, hx, type="l")
+# http://stackoverflow.com/questions/6967664/ggplot2-histogram-with-normal-curve
+ggplot(sampleMeans_tbl, aes(x=sampleMeans)) +
+  geom_histogram(aes(y=..density..), color="black", fill="white") +
+  #geom_density(alpha=.2, fill="#FF6666") +
+  stat_function(fun=dnorm, args=list(mean=sampleMean, sd=sampleSD))
+```
+
+***
+
+
+
+
+
