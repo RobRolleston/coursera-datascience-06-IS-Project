@@ -24,14 +24,34 @@ This is the project for the statistical inference class. In it, I will use simul
 tbd
 
 ### Load and explore data
-tbd
 ```{r}
 library(datasets)
 data("ToothGrowth")
+ToothGrowth_tbl <- tbl_df(ToothGrowth)
+glimpse(ToothGrowth_tbl)
+```
+Some inspection of the ToothGrowth data indicates it has `r nrow(ToothGrowth_tbl)` observations of `r ncol(ToothGrowth_tbl)` values: `r names(ToothGrowth_tbl)`.  The 'supp' value is a factor with only `r nlevels(as.factor(ToothGrowth_tbl$supp))` levels: `r levels(as.factor(ToothGrowth_tbl$supp))`. The 'dose' value, although a number, actualy has only `r nlevels(as.factor(ToothGrowth_tbl$dose))` values: `r levels(as.factor(ToothGrowth_tbl$dose))`.  For processing, this value was converted to a factor.
+```{r}
+ToothGrowth_tbl$dose <- as.factor(ToothGrowth_tbl$dose)
 ```
 
 ### Data Summary
-tbd
+A faceted set of histograms
+```{r}
+ggplot(ToothGrowth_tbl, aes(x=len)) +
+  geom_histogram(color="black", fill="white") +
+  facet_grid(supp ~ dose) +
+  ggtitle("Histograms of 'len' by 'supp' (OJ|VC) and 'dose' (0.5|1|2) ")
+```
+
+The basic question is: **"Is ToothGrowth 'len' afected by 'supp' or 'dose'?"**  
+The mean, sd, and count of values  of 'len' are:  
+```{r}
+summaryLen <- ToothGrowth_tbl %>% group_by(supp, dose) %>%
+              summarize (mean = mean(len), sd=sd(len), n=n())
+print(summaryLen)
+```
+
 
 ### Compare tooth growth by supp and dose
 tbd
