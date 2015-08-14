@@ -54,8 +54,48 @@ print(summaryLen)
 
 
 ### Compare tooth growth by supp and dose
-tbd
 
+Compare different doses of supp=="OJ"
+```{r}
+OJ_by_dose <- tbl_df(data.frame(matrix(ncol=4, nrow=3)))
+colnames(OJ_by_dose) <- c("supp", "dose1", "dose2", "pvalue")
+OJ_by_dose[1,] = c("OJ", ".5", "1", 
+    t.test(len~dose, data=droplevels(filter(ToothGrowth_tbl, supp=="OJ" & dose!=2)))[3]$p.value)
+OJ_by_dose[2,] = c("OJ", ".5", "2", 
+    t.test(len~dose, data=droplevels(filter(ToothGrowth_tbl, supp=="OJ" & dose!=1)))[3]$p.value)
+OJ_by_dose[3,] = c("OJ", "1", "2", 
+    t.test(len~dose, data=droplevels(filter(ToothGrowth_tbl, supp=="OJ" & dose!=0.5)))[3]$p.value)
+OJ_by_dose <- mutate(OJ_by_dose, H0 = ifelse(pvalue > 0.05, "Accept", "Reject"))
+print(OJ_by_dose)
+```
+
+Compare different doses of supp=="VC"
+```{r}
+VC_by_dose <- tbl_df(data.frame(matrix(ncol=4, nrow=3)))
+colnames(VC_by_dose) <- c("supp", "dose1", "dose2", "pvalue")
+VC_by_dose[1,] = c("VC", ".5", "1", 
+    t.test(len~dose, data=droplevels(filter(ToothGrowth_tbl, supp=="VC" & dose!=2)))[3]$p.value)
+VC_by_dose[2,] = c("VC", ".5", "2", 
+    t.test(len~dose, data=droplevels(filter(ToothGrowth_tbl, supp=="VC" & dose!=1)))[3]$p.value)
+VC_by_dose[3,] = c("VC", "1", "2", 
+    t.test(len~dose, data=droplevels(filter(ToothGrowth_tbl, supp=="VC" & dose!=0.5)))[3]$p.value)
+VC_by_dose <- mutate(VC_by_dose, H0 = ifelse(pvalue > 0.05, "Accept", "Reject"))
+print(VC_by_dose)
+```
+
+Compare different supp by dose
+```{r}
+dose_by_supp <- tbl_df(data.frame(matrix(ncol=4, nrow=3)))
+colnames(dose_by_supp) <- c("dose", "supp1", "supp2", "pvalue")
+dose_by_supp[1,] <- c(".5", "OJ", "VC",
+  t.test(len~supp, data=droplevels(filter(ToothGrowth_tbl,  dose==.5)))[3]$p.value)
+dose_by_supp[2,] <- c("1", "OJ", "VC",
+  t.test(len~supp, data=droplevels(filter(ToothGrowth_tbl,  dose==1)))[3]$p.value)
+dose_by_supp[3,] <- c("2", "OJ", "VC",
+  t.test(len~supp, data=droplevels(filter(ToothGrowth_tbl,  dose==2)))[3]$p.value)
+dose_by_supp <- mutate(dose_by_supp, H0 = ifelse(pvalue > 0.05, "Accept", "Reject"))
+print(dose_by_supp)
+```
 ### Conclusions
 tbd
 
