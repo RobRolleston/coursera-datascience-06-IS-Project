@@ -20,37 +20,33 @@ This is the project for the statistical inference class. In it, I will use simul
 2. Basic inferential data analysis.
 
 ## Simulation Excercise
-We will generate a large number of iid variables, and then use them to sample without replacement. The parameters used are:
+tbd
+
+### Simulations
 ```{r}
 nosim <- 1000
 n <- 40
 lambda <- 0.2
 populationMean <- 1./lambda
 populationSD <- 1./lambda
-```
-### Simulations
-Generate `r format(nosim*n, scientific=FALSE)` exponentially iid samples with rate=`r lambda`.  To visually inspect these samples, a histogram of the sample is plotted, along with the theoretical density curve for the population (red dashed line).
-```{r}
-randomData <- rexp(nosim * n, rate=lambda)
-tbl_df(data.frame(randomData)) %>%
-ggplot(aes(x=randomData)) +
-  geom_histogram(aes(y=..density..), color="black", fill="white") +
-  stat_function(fun=dexp, args=list(rate=lambda), color="red", linetype="dashed", size=1)
-```
+sampleData <- matrix(rexp(nosim * n, rate=lambda), nosim)
+hist(sampleData)
 
-The iid samples have very good agreement to the theoretical distribution.
+sampleData_tbl <- gather(tbl_df(data.frame(sampleData)))
+#ggplot(sampleData_tbl, aes(x=value)) + geom_histogram()
+#ggplot(sampleData_tbl, aes(x=value)) + geom_density()
+```
 
 ### Sample Mean versus Theoretical Mean
-These `r format(nosim*n, scientific=FALSE)` samples are now divided into `r nosim` sets, each with `r n` samples.  The mean of each sample set is calculated.  *It is the propoerties of these sample means which is the focuse of this excercise.*
-
 ```{r}
-sampleData <- matrix(randomData, nosim)
 sampleMeans <- apply(sampleData, 1, mean)
 sampleMean <- mean(sampleMeans)
+sampleSD <- sd(sampleMeans)
 
+inferredSD <- populationSD/sqrt(n)
 ```
-The mean of the samples is `r format(sampleMean, scientific=FALSE)` which is very close to the population mean of `r populationMean`. This can be shown graphically, by plotting a histogram of the means of the samples.  In the figure below, the solid black line is the mean of the samples, and the red dashed line is the mean of population. 
 ```{r, echo=FALSE}
+#hist(sampleMeans)
 sampleMeans_tbl <- tbl_df(data.frame(sampleMeans))
 ggplot(sampleMeans_tbl, aes(x=sampleMeans)) +
   geom_histogram(color="black", fill="white") +
@@ -59,10 +55,9 @@ ggplot(sampleMeans_tbl, aes(x=sampleMeans)) +
 ```
 
 ### Sample Variance versus Theoretical Variance
-The sd of the distributions of the means of the  sample sets is calculated, and we can now compare the inferred variation of the means [= s/sqrt(n)) ] with the actual sd of the distribution of sample means. This can be shown graphically, by plotting a histogram of the means of the samples.  In the figure below, the upper solid black line is +/- 1 sd of the samples, and the upper ed dashed line is +/- 1 sd of population.   The lower lines are +/- 2 sd.
+Compare the inferred variation of the means (inferredSD, via s/sqrt(n)) with the actual value
 ```{r, echo=FALSE}
-sampleSD <- sd(sampleMeans)
-inferredSD <- populationSD/sqrt(n)
+#hist(sampleMeans)
 ggplot(sampleMeans_tbl, aes(x=sampleMeans)) +
   geom_histogram(color="black", fill="white") +
   geom_vline(aes(xintercept=sampleMean), color="black", size=1, alpha=.2) + 
@@ -79,16 +74,21 @@ ggplot(sampleMeans_tbl, aes(x=sampleMeans)) +
 ```
 
 ### Distribution
-In theory, the distribution of the means should be normally distributed with a mean of `r populationMean` and a sd of `r populationSD/sqrt(n)`.   The figure below is a histogram of the means; the solid black line is normal(sampleMean, sampleSD), and the red dashed line is normal;(populationMean, populationSD/sqrt(n).
-
+tbd
+```{r}
+#x <- seq(0,50, length=100)
+#hx <- dexp(x, rate=lambda)
+```
 ```{r, echo=FALSE}
+#plot(x, hx, type="l")
+# http://stackoverflow.com/questions/6967664/ggplot2-histogram-with-normal-curve
 ggplot(sampleMeans_tbl, aes(x=sampleMeans)) +
   geom_histogram(aes(y=..density..), color="black", fill="white") +
-  stat_function(fun=dnorm, args=list(mean=sampleMean, sd=sampleSD)) +
-  stat_function(fun=dnorm, args=list(mean=populationMean, sd=populationSD/sqrt(n)), color="red", linetype="dashed", size=1)
+  #geom_density(alpha=.2, fill="#FF6666") +
+  stat_function(fun=dnorm, args=list(mean=sampleMean, sd=sampleSD))
 ```
 
-It can be seen that indeed, the distribution of the sample means is normally distributed.
+***
 
 
 

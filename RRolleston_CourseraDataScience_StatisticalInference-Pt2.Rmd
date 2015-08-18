@@ -21,7 +21,6 @@ This is the project for the statistical inference class. In it, I will use simul
 
 
 ##  Basic Inferential Data Analysis
-tbd
 
 ### Load and explore data
 ```{r}
@@ -30,7 +29,7 @@ data("ToothGrowth")
 ToothGrowth_tbl <- tbl_df(ToothGrowth)
 glimpse(ToothGrowth_tbl)
 ```
-Some inspection of the ToothGrowth data indicates it has `r nrow(ToothGrowth_tbl)` observations of `r ncol(ToothGrowth_tbl)` values: `r names(ToothGrowth_tbl)`.  The 'supp' value is a factor with only `r nlevels(as.factor(ToothGrowth_tbl$supp))` levels: `r levels(as.factor(ToothGrowth_tbl$supp))`. The 'dose' value, although a number, actualy has only `r nlevels(as.factor(ToothGrowth_tbl$dose))` values: `r levels(as.factor(ToothGrowth_tbl$dose))`.  For processing, this value was converted to a factor.
+Some inspection of the ToothGrowth data indicates it has `r nrow(ToothGrowth_tbl)` observations of `r ncol(ToothGrowth_tbl)` values: `r names(ToothGrowth_tbl)`.  The 'supp' value is a factor with only `r nlevels(as.factor(ToothGrowth_tbl$supp))` levels: `r levels(as.factor(ToothGrowth_tbl$supp))`. The 'dose' value, although a number, actually has only `r nlevels(as.factor(ToothGrowth_tbl$dose))` values: `r levels(as.factor(ToothGrowth_tbl$dose))`.  For processing, this value was converted to a factor.
 ```{r}
 ToothGrowth_tbl$dose <- as.factor(ToothGrowth_tbl$dose)
 ```
@@ -44,7 +43,7 @@ ggplot(ToothGrowth_tbl, aes(x=len)) +
   ggtitle("Histograms of 'len' by 'supp' (OJ|VC) and 'dose' (0.5|1|2) ")
 ```
 
-The basic question is: **"Is ToothGrowth 'len' afected by 'supp' or 'dose'?"**  
+The basic question is: **"Is ToothGrowth 'len' affected by 'supp' or 'dose'?"**  
 The mean, sd, and count of values  of 'len' are:  
 ```{r}
 summaryLen <- ToothGrowth_tbl %>% group_by(supp, dose) %>%
@@ -55,7 +54,7 @@ print(summaryLen)
 
 ### Compare tooth growth by supp and dose
 
-Compare different doses of supp
+Different doses of supp will be compared using a t-test.  To aid understanding about what is being tested, the figure below contains two sets of box plots; one for each of the the 'sup': 'OJ' and 'VC.  Each set contains 3 box plots, one for each of the doses: '0.5', '1', and '2'. The null hypothesis is: **There is no difference in the means of samples**
 ```{r}
 supp_by_dose <- tbl_df(data.frame(matrix(ncol=4, nrow=6)))
 colnames(supp_by_dose) <- c("supp", "dose1", "dose2", "pvalue")
@@ -77,8 +76,10 @@ supp_by_dose <- mutate(supp_by_dose, H0 = ifelse(pvalue > 0.05, "Accept", "Rejec
 ggplot(ToothGrowth_tbl, aes(x=supp, y=len, fill=dose)) + geom_boxplot()
 print(supp_by_dose)
 ```
+As can be seen graphically, and confirmed by the p-values and rejection of the null hypothesis: *For each supplement, the amount of the 'dose' does indeed have a statistically different effect on the mean of the 'len'.*
 
-Compare different supp by dose
+
+Different 'supp' at each 'dose' will be compared using a t-test.  To aid understanding about what is being tested, the figure below contains three sets of box plots; one for each of the the 'dose': '0.5', '1', and '2'.  Each set contains 2 box plots, one for each of the 'sup' : 'OJ' and 'VC: . The null hypothesis is: **There is no difference in the means of samples**
 
 ```{r}
 dose_by_supp <- tbl_df(data.frame(matrix(ncol=4, nrow=3)))
@@ -94,8 +95,10 @@ dose_by_supp <- mutate(dose_by_supp, H0 = ifelse(pvalue > 0.05, "Accept", "Rejec
 ggplot(ToothGrowth_tbl, aes(x=dose, y=len, fill=supp)) + geom_boxplot()
 print(dose_by_supp)
 ```
+As can be seen graphically, and confirmed by the p-values and rejection or acception of the null hypothesis: *For the 'doses' 0.5 and 1, the 'supp' does indeed have a statistically different effect on the mean of the 'len'.  for the dose of 2, there is no difference.*
+
 ### Conclusions
-The only case where changing the supp or the dose does not affect the len is when the dose for each supp==2 (p-vale=0.96).  In all other cases the p-value is less than 0.05, and thus the null hypotheseis is rejected.
+The only case where changing the supp or the dose does not affect the len is when the dose for each supp==2 (p-vale=0.96).  In all other cases the p-value is less than 0.05, and thus the null hypothesis is rejected.
 
 
 
