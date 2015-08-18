@@ -44,6 +44,8 @@ ggplot(ToothGrowth_tbl, aes(x=len)) +
 ```
 
 The basic question is: **"Is ToothGrowth 'len' affected by 'supp' or 'dose'?"**  
+*Assumption: *  These observations are from a population of 60 individuals.  There are no paired samples.
+
 The mean, sd, and count of values  of 'len' are:  
 ```{r}
 summaryLen <- ToothGrowth_tbl %>% group_by(supp, dose) %>%
